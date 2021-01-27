@@ -55,10 +55,10 @@ void disableButtonInterrupt() {
 
 void timerInt() {
     timerIntHandler();
-    asm("ret");
+    asm("mret");
 }
 void buttonInt() {
     button_state_read = 0;
     buttonIntHandler();
-    asm("ret");
+    asm("mret");
 }
