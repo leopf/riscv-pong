@@ -34,7 +34,6 @@ void set_pixel(int x, int y, char pixel)
     *pixel_addr = pixel;
 }
 
-
 void fill_rect_diff(int x0, int y0, int x1, int y1, int w, int h, char fill) {
     int xDiff = x1 - x0;
     int yDiff = y1 - y0;
@@ -66,25 +65,12 @@ void update_rect(int oldX, int oldY, int newX, int newY, int w, int h, char fill
 
 void draw_rect(int x, int y, int w, int h, char pixel)
 {
-    int pixels[4] = {
-        pixel,
-        pixel & pixel << 8,
-        pixel & pixel << 8 & pixel << 16,
-        pixel & pixel << 8 & pixel << 16 & pixel << 24
-    };
-
-    for (int xo = 0; xo < w; xo += 4)
+    for (int xo = 0; xo < w; xo++)
     {
         for (int yo = 0; yo < h; yo++)
         {
-            int volatile *pixel_addr = (int volatile*)get_pixel_pointer(x + xo, y + yo);
-
-            int diff = w - xo - 1;
-            if (diff > 3) {
-                diff = 3;
-            }
-
-            *pixel_addr = pixels[diff];
+            char volatile *pixel_addr = get_pixel_pointer(x + xo, y + yo);
+            *pixel_addr = pixel;
         }
     }
 }
