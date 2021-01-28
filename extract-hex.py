@@ -20,7 +20,7 @@ hex_file = open(args.output_filename, 'w')
 
 hex_lines = []
 for line in asm_file.readlines(): 
-    if line.startswith("1c08") and line.find(":") == 8:
+    if line.startswith("1c008") and line.find(":") == 8:
         hex_lines.append(line[10:18])
 
 hex_file.write("\r\n".join(hex_lines))

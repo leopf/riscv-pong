@@ -4,7 +4,7 @@ sudo apt -y upgrade
 sudo apt-get -y install git python3-pip autoconf automake autotools-dev curl python3 libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo gperf libtool patchutils bc zlib1g-dev libexpat-dev
 
 # install python packages for helpers
-pip3 install riscv-model argparse
+pip3 install riscv-model argparse pyelftools
 
 # clone gnu toolchain
 mkdir -p ~/build

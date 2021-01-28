@@ -3,10 +3,10 @@ OUTPUT_ARCH(riscv)
 
 MEMORY
 {
-  RAM (rwx)  : ORIGIN = 0x1C000000, LENGTH = 512K 
-  ROM (rx)   : ORIGIN = 0x1C080000, LENGTH = 512K 
+  RAM (rwx)  : ORIGIN = 0x1C000000, LENGTH = 6K 
+  ROM (rx)   : ORIGIN = 0x1C008000, LENGTH = 8K 
 }
-/* _start = 0x1C080000 */
+/* _start = 0x1C008000 */
 ENTRY(_start)
 SEARCH_DIR("/opt/riscv32/riscv32-unknown-elf/lib");
 SECTIONS

@@ -54,8 +54,8 @@ void initGame()
     initState();
     draw_rect(0, 0, FRAME_WIDTH, FRAME_HEIGHT, COLOR_BG);
     renderFull();
-    setTimerInterrupt(1000000, &gameLoop);
-    enableButtonInterrupt(&buttonPressed);
+    setTimerInterrupt(1000000);
+    enableButtonInterrupt();
 }
 
 void initState()
@@ -70,29 +70,29 @@ void initState()
     state.paddle2DirY = 0;
 }
 
-void buttonPressed() {
-    int buttonState = getButtonState() >> 14;
+void buttonInt() {
+    int buttonState = getButtonState() >> 15;
     int paddle1Dir = 0;
     int paddle2Dir = 0;
 
-    if (button_state & 1 == 1) {
+    if (buttonState & 1 == 1) {
         paddle1Dir += -1;
     }
-    if (button_state & 2 == 2) {
+    if (buttonState & 2 == 2) {
         paddle1Dir += 1;
     }
-    if (button_state & 4 == 4) {
+    if (buttonState & 4 == 4) {
         paddle2Dir += -1;
     }
-    if (button_state & 8 == 8) {
+    if (buttonState & 8 == 8) {
         paddle2Dir += 1;
     }
 
     if (state.ballDirX == 0) {
-        if (button_state & 3 != 0) {
+        if (buttonState & 3 != 0) {
             state.ballDirX = BALL_SPEED;
         }
-        if (button_state & 12 != 0) {
+        if (buttonState & 12 != 0) {
             state.ballDirX = -BALL_SPEED;
         }   
     }
@@ -101,7 +101,7 @@ void buttonPressed() {
     state.paddle2DirY = PADDLE_SPEED * paddle2Dir;
 }
 
-void gameLoop()
+void timerInt()
 {
     if (gameResetRequired() == 1)
     {

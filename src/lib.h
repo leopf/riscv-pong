@@ -10,8 +10,3 @@ int minMax(int min, int value, int max) {
     }
     return value;
 }
-
-void init() {
-    initDisplay();
-    initInterrupts();
-}
