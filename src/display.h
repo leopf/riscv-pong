@@ -18,7 +18,10 @@ void update_rect(int oldX, int oldY, int newX, int newY, int w, int h, char fill
 
 char volatile *get_pixel_pointer(int x, int y)
 {
-    return p_vga_buffer_start + x + FRAME_WIDTH * y;
+    if(x > FRAME_WIDTH || y > FRAME_HEIGHT || x < 0 || y < 0)
+        return p_vga_buffer_start;
+    else
+        return p_vga_buffer_start + x + FRAME_WIDTH * y;
 }
 
 void set_pixel(int x, int y, char pixel)
@@ -27,6 +30,18 @@ void set_pixel(int x, int y, char pixel)
     *pixel_addr = pixel;
 }
 
+char rectsCollide(int x1, int y1, int w1, int h1, int x2, int y2, int w2, int h2)
+{
+    if (x1 + w1 >= x2 &&
+        x2 + w2 >= x1 && 
+        y1 + h1 >= y2 &&
+        y2 + h2 >= y1) {
+            return 1;
+    }
+    else {
+        return 0;
+    }
+}
 
 void fill_rect_diff(int x0, int y0, int x1, int y1, int w, int h, char fill) {
     int xDiff = x1 - x0;
@@ -35,26 +50,30 @@ void fill_rect_diff(int x0, int y0, int x1, int y1, int w, int h, char fill) {
     if (x0 <= x1) {
         draw_rect(x0, y0, xDiff, h, fill);
         if (y0 <= y1) {
-            draw_rect(x0 + xDiff, y0 + yDiff, w - xDiff, yDiff, fill);
+            draw_rect(x0 + xDiff, y0, w - xDiff, yDiff, fill);
         }
         else {  
-            draw_rect(x0 + xDiff, y0, w - xDiff, -yDiff, fill);
+            draw_rect(x0 + xDiff, y0 - yDiff, w - xDiff, -yDiff, fill);
         }
     }
     else {
-        draw_rect(x0 - xDiff, y0, -xDiff, h, fill);
+        draw_rect(x0 - xDiff, y0, -xDiff, h, fill); // 10 - (20 + 10), 210, 10
         if (y0 <= y1) {
-            draw_rect(x0, y0 + yDiff, w + xDiff, yDiff, fill);
+            draw_rect(x0, y0, w + xDiff, yDiff, fill);
         }
         else {
-            draw_rect(x0, y0, w + xDiff, -yDiff, fill);
+            draw_rect(x0, y0 - yDiff, w + xDiff, -yDiff, fill);
         }
     }
 }
 
-void update_rect(int oldX, int oldY, int newX, int newY, int w, int h, char fill, char clear) {
-    fill_rect_diff(oldX, oldY, newX, newY, w, h, clear);
-    fill_rect_diff(newX, newY, oldX, oldY, w, h, fill);
+// void update_rect(int oldX, int oldY, int newX, int newY, int w, int h, char fill, char clear) {
+//     fill_rect_diff(oldX, oldY, newX, newY, w, h, clear);
+//     fill_rect_diff(newX, newY, oldX, oldY, w, h, fill);
+// }
+
+void clear_window(char color) {
+    draw_rect(0, 0, FRAME_WIDTH, FRAME_HEIGHT, color);
 }
 
 void draw_rect(int x, int y, int w, int h, char pixel)
