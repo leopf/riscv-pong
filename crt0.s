@@ -1,51 +1,55 @@
-.section .init, "ax"
-.global _start
+.section .text
+reset_handler:
+  la x2, stack
+  j main
+  
+.global changeStack
+changeStack:
+  mv   sp, a2
+  jr   a1
+.section .vectors, "ax"
+.option norvc;
+.org 0x0
 _start:
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
 jal zero, int_timer
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
 jal zero, int_button
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-jal zero, int_ret
-.cfi_startproc
-.cfi_undefined ra
-.option push
-.option norelax
-la gp, __global_pointer$
-.option pop
-la sp, __stack_top
-add s0, sp, zero
-jal zero, main
-.cfi_endproc
-int_ret:
-mret
-jal zero, loop
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+jal zero, default_handler
+.org 0x80
+jal x0, reset_handler
+.org 0x84
+loop: j loop
+
+default_handler: mret
+
 int_timer: 
 addi sp, sp, -112
 sw x1, 0(sp)
@@ -168,6 +172,3 @@ lw x30, 104(sp)
 lw x31, 108(sp)
 addi sp, sp, 112
 mret
-jal zero, loop
-loop: jal zero, loop
-.end

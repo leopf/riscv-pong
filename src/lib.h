@@ -1,6 +1,3 @@
-#include "display.h"
-#include "interrupts.h"
-
 #define CPU_CLOCK 2000000
 
 int minMax(int min, int value, int max) {
